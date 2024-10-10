@@ -12,7 +12,7 @@
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
     <div class="slider">
         <div class="slides">
-            <!-- 각 슬라이드 -->
+            <!-- 0d00각 슬라이드 -->
             <div class="slide"><img src="<c:url value='/static/Images/MainImg/event1.png'/>" alt="Event 1"></div>
             <div class="slide"><img src="<c:url value='/static/Images/MainImg/event2.png'/>" alt="Event 2"></div>
             <div class="slide"><img src="<c:url value='/static/Images/MainImg/event3.png'/>" alt="Evemt 3"></div>
