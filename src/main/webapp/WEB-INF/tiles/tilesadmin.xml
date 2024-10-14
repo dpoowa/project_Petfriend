@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="baselayout" template="/WEB-INF/views/common/admin/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/common/admin/header.jsp" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/common/admin/sidebar.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+	<definition name="admin" extends="baselayout">
+		<put-attribute name="title" value="펫프렌즈 : 관리자 페이지" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/admin_home.jsp" />
+	</definition>
+</tiles-definitions>
