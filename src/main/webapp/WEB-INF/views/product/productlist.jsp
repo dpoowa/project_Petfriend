@@ -39,7 +39,7 @@
 	<!-- 필터기능 초기화부분 -->
 	<div class="reset">
 		<img src="/static/Images/ProductImg/ProImg/filterimg.png" alt="" /> 
-		c
+		<button type="button" id="showbtn">필터로 내새꾸 선물 찾기</button>
 		<button type="button" class="resetbtn" id="resetbtn">초기화◁</button>
 		<button type="submit">적용하기</button>
 		<!-- 필터기능 -->
