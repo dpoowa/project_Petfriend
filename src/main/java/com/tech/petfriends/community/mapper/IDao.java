@@ -21,6 +21,8 @@ public interface IDao {
 	
 	public void imgWrite(int board_no, String originalFile, String changeFile,String repImgOriginal, String repImgChange);
 
+//	public  ArrayList<CDto> getPetIMG(CDto mem_code);
+	
 	public int selBid();
 
 	public CDto contentView(String board_no); 
@@ -51,7 +53,6 @@ public interface IDao {
 
 	public int replyDelete(String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
 	
-
 	public void addLike (String board_no,String user_id);
 	
 	public void removeLike (String board_no,String user_id);
