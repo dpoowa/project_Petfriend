@@ -86,24 +86,26 @@
 
 			<div class="sidebar">
 				<div class="ad-banner">
-					<a href=""> <img src="/static/Images/communityorign_img/ad1.jpg"
-						alt="광고 배너" />
+					<a href=""> <img
+						src="/static/Images/communityorign_img/ad1.jpg" alt="광고 배너" />
 					</a>
 				</div>
 
 				<div class="post-header">
-				    <div class="profile-info">
-				        <c:if test="${sessionScope.loginUser ne null}">
-				            <c:forEach items="${postList}" var="postList">
-				                <img src="/static/Images/pet/${postList.pet_img}" alt="Profile Image" class="profile-image">
-				                <span class="user-name">${sessionScope.loginUser.mem_nick}</span>
-				            </c:forEach>
-				            <a href="#" class="login-button">로그아웃</a>
-				        </c:if>
-				        <c:if test="${sessionScope.loginUser eq null}">
-				            <a href="#" class="login-button">로그인</a>
-				        </c:if>
-				    </div>
+					<div class="profile-info">
+						
+						<c:if test="${sessionScope.loginUser ne null}">
+							<img src="/static/Images/pet/${getpetimg.pet_img}"
+								alt="Profile Image" class="profile-image">
+							<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
+							<a href="/mypage/logout" class="logout-button">로그아웃</a>
+						</c:if>
+					
+						<c:if test="${sessionScope.loginUser eq null}">
+							<a href="/login/loginPage" class="login-button">로그인</a>
+						</c:if>
+					
+					</div>
 				</div>
 
 
@@ -111,7 +113,15 @@
 
 				<ul class="sidebar-menu">
 					<li><a href="#">내 피드</a></li>
-					<li><a href="/community/writeView">글쓰기</a></li>
+					<c:if test="${sessionScope.loginUser ne null}">
+						<!-- 로그인이 되어 있을 때 글쓰기 페이지로 이동 -->
+						<li><a href="/community/writeView">글쓰기</a></li>
+					</c:if>
+
+					<c:if test="${sessionScope.loginUser eq null}">
+						<!-- 로그인이 되어 있지 않을 때 알림창을 띄움 -->
+						<li><a href="/community/writeView" onclick="alert('로그인이 필요합니다'); return false;">글쓰기</a></li>
+					</c:if>
 					<li><a href="#">내 소식</a></li>
 					<li><a href="#">내 활동</a></li>
 					<li><a href="#">이웃 목록</a></li>
@@ -128,8 +138,8 @@
 					<p>나의 특별한 여행지에서의 영상도 보여드릴게요!</p>
 				</div>
 				<div class="ad-banner">
-					<a href=""> <img src="/static/Images/communityorign_img/ad1.jpg"
-						alt="광고 배너" />
+					<a href=""> <img
+						src="/static/Images/communityorign_img/ad1.jpg" alt="광고 배너" />
 					</a>
 				</div>
 			</div>
@@ -152,23 +162,23 @@
 				<div class="story-container">
 
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story1.jpeg" alt="스토리 이미지 1"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story1.jpeg"
+							alt="스토리 이미지 1" class="story-image" />
 							<p>살구언니</p>
 					</a></li>
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story2.jpeg" alt="스토리 이미지 2"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story2.jpeg"
+							alt="스토리 이미지 2" class="story-image" />
 							<p>코댕이네</p>
 					</a></li>
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story3.jpeg" alt="스토리 이미지 3"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story3.jpeg"
+							alt="스토리 이미지 3" class="story-image" />
 							<p>버디언니</p>
 					</a></li>
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story4.jpeg" alt="스토리 이미지 4"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story4.jpeg"
+							alt="스토리 이미지 4" class="story-image" />
 							<p>토리누나</p>
 					</a></li>
 

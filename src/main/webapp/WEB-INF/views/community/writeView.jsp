@@ -25,6 +25,7 @@
     <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
        <input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
        <input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+       <input type="hidden" name="pet_img" value="${postList.pet_img}">
       
        <div class="form-group">
         <label for="user_id"> 작성자: ${sessionScope.loginUser.mem_nick} </label>

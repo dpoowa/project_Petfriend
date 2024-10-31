@@ -1,9 +1,6 @@
 package com.tech.petfriends.community.mapper;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,7 +18,7 @@ public interface IDao {
 	
 	public void imgWrite(int board_no, String originalFile, String changeFile,String repImgOriginal, String repImgChange);
 
-//	public  ArrayList<CDto> getPetIMG(CDto mem_code);
+	public CDto getPetIMG(String mem_code);
 	
 	public int selBid();
 
@@ -37,10 +34,10 @@ public interface IDao {
 
 	public void delete(int board_no);
 
-	public void comment(String board_no, String comment_no, String user_id, String comment_content,
+	public void comment(String board_no, String comment_no, String mem_nick, String comment_content,
 			String parent_comment_no, String comment_level, String comment_order_no);
 
-	public void commentReply(String board_no,String user_id, String comment_content,
+	public void commentReply(String board_no,String mem_nick, String comment_content,
 			String parent_comment_no, String comment_level, String comment_order_no);
 	
 	public void commentShape(String parent_comment_no, String comment_level);
