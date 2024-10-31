@@ -33,7 +33,7 @@ public class CCommentReplyService implements CServiceInterface {
 		
 		iDao.commentShape(parent_comment_no, comment_level);
 		iDao.commentReply(board_no, mem_nick,comment_content,parent_comment_no,comment_level,comment_order_no);
-	
+		
 	
 	}
 	

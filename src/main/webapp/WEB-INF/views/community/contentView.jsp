@@ -17,7 +17,14 @@
         }
 
         function toggleReplyForm(commentId) {
-            var replyForm = document.getElementById("replyForm-" + commentId);
+			var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
+
+			if (!isLoggedIn) {
+			    alert("로그인이 필요합니다.");
+			    return;  // 로그인되지 않은 상태에서는 댓글 영역 표시하지 않음
+			}
+			
+	        var replyForm = document.getElementById("replyForm-" + commentId);
             replyForm.style.display = replyForm.style.display === "none" || replyForm.style.display === "" ? "block" : "none";
         }
         
@@ -36,7 +43,17 @@
                 }
             });
         }
-        
+		
+		function checkLoginAndFocus(textarea) {
+		      var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
+
+		      if (!isLoggedIn) {
+		          alert("로그인이 필요합니다.");
+		          textarea.blur();  // 클릭 후 textarea 포커스를 해제
+		      } else {
+		          textarea.focus();  // 로그인 상태라면 textarea에 포커스
+		      }
+		  }
         
     </script>
 
@@ -102,6 +119,8 @@
 			<c:forEach var="comment" items="${commentList}">
 				<div class="comment"
 					style="padding-left: ${comment.comment_order_no * 20}px;">
+					<img src="/static/Images/pet/${comment.pet_img}"
+													alt="Profile Image" class="profile-image">
 					<span class="user-name">${comment.user_id}</span>: <span
 						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span>
 					<span class="comment-time">${comment.created_date}</span>
@@ -120,18 +139,17 @@
 								type="hidden" name="comment_level"
 								value="${comment.comment_level}"> <input type="hidden"
 								name="comment_order_no" value="${comment.comment_order_no}">
-							<%-- <c:if test="${sessionScope.loginUser.mem_code eq contentView.mem_code}"> --%>
+							 <c:if test="${sessionScope.loginUser.mem_nick eq comment.user_id}">
 								<button type="submit" class="delete-button">삭제</button>
-						<%-- 	</c:if> --%>
+							</c:if>
 						</form>
 						
 					</div>
 					<!-- 대댓글 입력 폼 -->
 					<div id="replyForm-${comment.comment_no}" class="reply-section"
 						style="display: none;">
-						<form action="/community/commentReply" method="post">
+						<form action="/community/commentReply" method="post" >
 							<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-							<input type="hidden" name="user_id" value="${comment.user_id}">
 							<input type="hidden" name="board_no" value="${contentView.board_no}"> 
 								<input type="hidden" name="comment_no" value="${comment.comment_no}"> 
 								<input type="hidden" name="parent_comment_no" value="${comment.parent_comment_no}"> 
@@ -140,7 +158,7 @@
 							
 							<textarea name="comment_content" placeholder="대댓글을 입력하세요..."
 								required></textarea>
-							<button type="submit">댓글 달기</button>
+							<button type="submit" >댓글 달기</button>
 						</form>
 					</div>
 
@@ -152,7 +170,7 @@
 							<div class="commentReply"
 								style="padding-left: ${(commentReply.comment_order_no) * 50}px;">
 									
-									<img src="/static/Images/pet/${contentView.pet_img}"
+									<img src="/static/Images/pet/${commentReply.pet_img}"
 								alt="Profile Image" class="profile-image">
 								<span class="user-name">${commentReply.user_id}</span>:  <span
 									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span>
@@ -162,7 +180,7 @@
 									<button onclick="toggleReplyForm(${commentReply.comment_no})">댓글</button>
 
 									<!-- 대댓글 삭제 버튼: 현재 로그인한 사용자와 대댓글 작성자가 같을 경우만 보이기 -->
-									<%--  <c:if test="${sessionScope.loggedInUserId == commentReply.user_id}"> --%>
+									<c:if test="${sessionScope.loginUser.mem_nick == commentReply.user_id}">
 									<form action="/community/replyDelete" method="post"
 										onsubmit="return confirm('정말 삭제하시겠습니까?')">
 
@@ -177,11 +195,12 @@
 											value="${commentReply.comment_order_no}">
 										<button type="submit" class="delete-button">삭제</button>
 									</form>
-									<%--     </c:if> --%>
+								 </c:if> 
 								</div>
 								<div id="replyForm-${commentReply.comment_no}"
 									class="reply-section" style="display: none;">
 									<form action="/community/commentReply" method="post">
+									<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
 										<input type="hidden" name="board_no"
 											value="${contentView.board_no}"> <input type="hidden"
 											name="comment_no" value="${commentReply.comment_no}">
@@ -204,13 +223,13 @@
 
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-input">
-				<form action="/community/comment" method="post">
+				<form action="/community/comment" method="post" >
 					<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
 					<input type="hidden" name="board_no"
 						value="${contentView.board_no}">
 					<textarea name="comment_content" placeholder="댓글을 입력하세요..."
-						required></textarea>
-					<button type="submit">댓글 달기</button>
+						required onclick="checkLoginAndFocus(this)"> </textarea>
+					<button type="submit" >댓글 달기</button>
 				</form>
 			</div>
 		</div>
