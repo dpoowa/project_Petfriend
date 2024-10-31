@@ -1,5 +1,6 @@
 package com.tech.petfriends.community.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,10 +68,12 @@ public class CommunityController {
 		System.out.println("community_write");
 		model.addAttribute("request", mtfRequest);
 		 
+		model.addAttribute("msg", "게시글이 작성됐습니다.");	        
+		model.addAttribute("url", "/community/main");
 		serviceInterface = new CWriteService(iDao);
 		serviceInterface.execute(model);
 		
-		return "redirect:/community/main";
+		return "/community/alert";
 
 	}
 
