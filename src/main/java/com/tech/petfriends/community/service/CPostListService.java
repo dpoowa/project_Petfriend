@@ -25,7 +25,7 @@ public class CPostListService implements CServiceInterface {
 
 	@Override
 	public void execute(Model model) {
-<<<<<<< HEAD
+
 		Map<String, Object> m = model.asMap();
 		HttpSession session = (HttpSession) m.get("session");
 	
@@ -44,19 +44,8 @@ public class CPostListService implements CServiceInterface {
 	
     
 		
-		
-		
-		
-
-	
-	
-	} 
-	
-=======
-		ArrayList<CDto> postList = iDao.getPostList(); // DAO 호출
-		model.addAttribute("postList", postList); // 모델에 게시글 리스트 추가
 
 	}
 
->>>>>>> fc1ee9abc408260bd96f5e23134dc9eae70a7161
+
 }

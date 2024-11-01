@@ -17,7 +17,7 @@
 					<a href="/community/contentView?board_no=${post.board_no}"
 						class="profile-link">
 						<div class="profile-info">
-
+							<c:if test="${ post.pet_img} null"></c:if>
 							<img src="/static/Images/pet/${post.pet_img}" alt="프로필 이미지 1"
 								class="profile-image" /> <span class="user-name">${post.user_id }</span>
 					</a> <span class="post-time">${post.board_created}</span>
