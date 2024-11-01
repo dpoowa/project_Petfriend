@@ -58,9 +58,7 @@ public class CWriteService implements CServiceInterface {
 		        throw new RuntimeException("Representative image upload failed", e);
 		    }
 		}
-
-		// 일반 이미지 업로드 처리
-		
+	    // 일반 이미지 업로드 처리
 		String originalFile = null; //일반이미지
 		String changeFile = null; 
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");

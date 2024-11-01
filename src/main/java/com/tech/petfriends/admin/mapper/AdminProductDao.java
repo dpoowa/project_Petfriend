@@ -11,7 +11,7 @@ import com.tech.petfriends.admin.dto.ProductListDto;
 public interface AdminProductDao {
 	
 	//어드민 상품리스트 불러오기
-	ArrayList<ProductListDto> adminProductList(String petType, String proType, String detailType, String searchType);
+	ArrayList<ProductListDto> adminProductList(String petType, String proType, String detailType, String searchType, String proOnOff);
 
 	//어드민 상품등록
 	void adminProductAdd(String proCode, String proName, String petType, String proType, String proDetailType,
@@ -21,5 +21,17 @@ public interface AdminProductDao {
 	//어드민 상품옵션등록
 	void adminProductOptAdd(String proCode, String optionName, int optionPrice, int optionCount, int finalPrice, String optCode);
 
+	ProductDetailProDto adminDetatilPro(String proCode);
+
+	ProductDetailImgDto adminDetailImg(String proCode);
+
+	List<ProductDetailOptDto> adminDetailOpt(String proCode);
+
+	void adminProductProModify(String proCode, String proName, String petType, String proType, String proDetailType,
+			String filterType1, String filterType2, int proDiscount, String productStatus);
+
+	void adminProductOptDelete(String proCode);
+
+	void adminProductImgDelete(String proCode);
 	
 }

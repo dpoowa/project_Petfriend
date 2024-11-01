@@ -7,7 +7,6 @@ import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -16,8 +15,8 @@ import com.tech.petfriends.community.mapper.IDao;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class CPostListService implements CServiceInterface{
-	
+public class CPostListService implements CServiceInterface {
+
 	private IDao iDao;
 
 	public CPostListService(IDao iDao) {
@@ -41,17 +40,8 @@ public class CPostListService implements CServiceInterface{
 		
 		ArrayList<CDto> postList = iDao.getPostList(); // DAO 호출
         model.addAttribute("postList", postList); // 모델에 게시글 리스트 추가
-	
-    
-		
-		
-		
-		
 
-	
-	
 	} 
 	
+  }
 }
-	
-
