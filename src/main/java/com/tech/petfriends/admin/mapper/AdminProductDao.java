@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.tech.petfriends.admin.dto.ProductDetailImgDto;
+import com.tech.petfriends.admin.dto.ProductDetailOptDto;
+import com.tech.petfriends.admin.dto.ProductDetailProDto;
 import com.tech.petfriends.admin.dto.ProductListDto;
 
 @Mapper

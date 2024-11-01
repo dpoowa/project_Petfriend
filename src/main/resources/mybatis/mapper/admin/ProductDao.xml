@@ -67,6 +67,7 @@
 			(#{optionName}, #{optionPrice}, #{optionCount},
 			#{proCode}, #{finalPrice}, #{optCode})
 	</insert>
+	
 	<select id="adminDetatilPro"
 		resultType="com.tech.petfriends.admin.dto.ProductDetailProDto">
 		SELECT 
