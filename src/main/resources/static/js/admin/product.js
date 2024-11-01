@@ -186,6 +186,14 @@ $(document).ready(function() {
 		btnArray3 = [];
 
 
+		// 옵션 필드 초기화
+		while (optionContainer.children.length > 0) {
+			optionContainer.removeChild(optionContainer.firstChild);
+		}
+
+		// 기본 옵션 필드 추가
+		optionContainer.appendChild(createNewOptionGroup()); // 기본 옵션 그룹 추가
+
 		//resetModal();
 		$('#registerProductBtn').text('등록하기');
 		document.getElementById('productModal').style.display = 'block';
@@ -195,8 +203,6 @@ $(document).ready(function() {
 
 	$('.close-btn').on('click', function() {
 		document.getElementById('productModal').style.display = 'none'; // 모달을 숨김
-<<<<<<< HEAD
-=======
 		// 이미지 배열 초기화
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
@@ -212,7 +218,6 @@ $(document).ready(function() {
 		// 미리보기 컨테이너의 내용 지우기
 		mainImagePreview.innerHTML = '';
 		desImagePreview.innerHTML = '';
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 	});
 
 
@@ -241,46 +246,7 @@ $(document).ready(function() {
 
 			const reader = new FileReader();
 			reader.onload = function(e) {
-<<<<<<< HEAD
-				const imgContainer = document.createElement('div');
-				imgContainer.style.position = 'relative';
-				imgContainer.style.display = 'inline-block';
-				imgContainer.style.marginLeft = '10px'; // 간격 추가
-
-				const img = document.createElement('img');
-				img.src = e.target.result;
-				img.style.width = '60px';
-				img.style.height = '60px';
-				img.style.objectFit = 'cover';
-				img.style.borderRadius = '8px'; // 이미지 모서리 둥글게 설정
-
-				const deleteButton = document.createElement('span');
-				deleteButton.innerText = '×';
-				deleteButton.style.position = 'absolute';
-				deleteButton.style.top = '-3px';
-				deleteButton.style.right = '-3px';
-				deleteButton.style.width = '15px';
-				deleteButton.style.height = '15px';
-				deleteButton.style.borderRadius = '50%';
-				deleteButton.style.backgroundColor = 'white';
-				deleteButton.style.color = 'black';
-				deleteButton.style.fontSize = '16px';
-				deleteButton.style.display = 'flex';
-				deleteButton.style.alignItems = 'center';
-				deleteButton.style.justifyContent = 'center';
-				deleteButton.style.cursor = 'pointer';
-				deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
-				deleteButton.onclick = () => {
-					imgContainer.remove();
-					selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
-				};
-
-				imgContainer.appendChild(img);
-				imgContainer.appendChild(deleteButton);
-				previewContainer.appendChild(imgContainer);
-=======
 				addImagePreview(e.target.result, file, selectedFiles, previewContainer, btnArray1);
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 			};
 			reader.readAsDataURL(file);
 		});
@@ -289,8 +255,6 @@ $(document).ready(function() {
 		event.target.value = '';
 	}
 
-<<<<<<< HEAD
-=======
 
 	// 이미지 미리보기 추가 함수
 	function addImagePreview(imgSrc, file, selectedFiles, previewContainer, btnArray) {
@@ -363,7 +327,6 @@ $(document).ready(function() {
 		previewContainer.appendChild(imgContainer);
 	}
 
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 	// 대표이미지 이벤트 핸들러
 	document.getElementById('proMainImages').addEventListener('change', function(event) {
 		handleFileSelect(event, 5, mainSelectedFiles, 'mainImagePreview');
@@ -373,6 +336,7 @@ $(document).ready(function() {
 	document.getElementById('proDesImages').addEventListener('change', function(event) {
 		handleFileSelect(event, 10, desSelectedFiles, 'desImagePreview');
 	});
+
 
 
 
@@ -392,7 +356,8 @@ $(document).ready(function() {
 
 	function addOptionLine() {
 		const optionGroup = document.querySelector('.input-group2');
-		const newOptionGroup = optionGroup.cloneNode(true);
+		// 기존 옵션 그룹이 없으면 새로운 옵션 그룹 생성
+		const newOptionGroup = optionGroup ? optionGroup.cloneNode(true) : createNewOptionGroup();
 
 		newOptionGroup.querySelectorAll('input').forEach(input => input.value = "");
 
@@ -428,8 +393,6 @@ $(document).ready(function() {
 		});
 	}
 
-<<<<<<< HEAD
-=======
 	// 새로운 옵션 그룹 생성 함수
 	function createNewOptionGroup(option = {}) {
 		const optionGroup = document.createElement('div');
@@ -461,7 +424,6 @@ $(document).ready(function() {
 		updateButtons(); // 버튼 상태 업데이트
 	}
 
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 
 
 	// 옵션 값을 가져오는 함수
@@ -618,8 +580,6 @@ $(document).ready(function() {
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -638,7 +598,6 @@ $(document).ready(function() {
 		btnArray2 = [];
 		btnArray3 = [];
 		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 
 
 
@@ -658,21 +617,8 @@ $(document).ready(function() {
 
 	});
 
-	
-	
-	// 수정 버튼 이벤트 바인딩
-			    $('#modify-btn').on('click', function() {
-			        const proCode = $(this).data('product-code');
-			        loadCouponForEdit(proCode); // 수정할 쿠폰 로드
-					
-					// 모달에 proCode를 저장하고 버튼 텍스트를 '수정'으로 설정
-				    $('#registerCouponBtn').text('수정하기');
-				    $('#productModal').data('proCode', proCode).show();
-			    });
 
 
-<<<<<<< HEAD
-=======
 	// 페이지가 로드된 후에 이벤트를 바인딩합니다.
 	$(document).on('click', '#modify-btn', function() {
 		// 기존 미리보기 이미지 초기화
@@ -766,6 +712,5 @@ $(document).ready(function() {
 			}
 		});
 	}
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 
 });

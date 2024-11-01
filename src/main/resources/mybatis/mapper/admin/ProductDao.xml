@@ -67,9 +67,6 @@
 			(#{optionName}, #{optionPrice}, #{optionCount},
 			#{proCode}, #{finalPrice}, #{optCode})
 	</insert>
-<<<<<<< HEAD
-=======
-	
 	<select id="adminDetatilPro"
 		resultType="com.tech.petfriends.admin.dto.ProductDetailProDto">
 		SELECT 
@@ -132,5 +129,4 @@
 		WHERE
 			PRO_CODE = #{proCode}
 	</delete>
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 </mapper>
