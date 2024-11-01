@@ -66,6 +66,7 @@ public class CWriteService implements CServiceInterface {
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		boolean isFileUploaded = fileList.stream().anyMatch(file -> !file.isEmpty());
 
+<<<<<<< HEAD
 		if (isFileUploaded) {
 		    for (MultipartFile mf : fileList) {
 		        if (!mf.isEmpty()) { // 파일이 실제로 존재할 때만 처리
@@ -73,6 +74,33 @@ public class CWriteService implements CServiceInterface {
 		            long longtime = System.currentTimeMillis();
 		            changeFile = longtime + "_" + originalFile;
 		            String pathFile = root + "\\" + changeFile;
+=======
+	
+	    // 일반 이미지 업로드 처리
+	    String originalFile = null;
+	    String changeFile = null;
+	    
+	    List<MultipartFile> fileList = mtfRequest.getFiles("file");
+	    if (originalFile != null && !originalFile.isEmpty()) {
+	        for (MultipartFile mf : fileList) {
+	            originalFile = mf.getOriginalFilename();
+	            System.out.println("original: " + originalFile);
+	            
+	            long longtime = System.currentTimeMillis();
+	            changeFile = longtime + "_" + originalFile;
+	            String pathFile = root + "\\" + changeFile;
+	            
+	            try {
+	                mf.transferTo(new File(pathFile));
+	                System.out.println("다중업로드성공");
+	                iDao.imgWrite(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                throw new RuntimeException("Representative image upload failed", e);
+	            }
+	        }
+	    }
+>>>>>>> fc1ee9abc408260bd96f5e23134dc9eae70a7161
 
 		            try {
 		                mf.transferTo(new File(pathFile));
