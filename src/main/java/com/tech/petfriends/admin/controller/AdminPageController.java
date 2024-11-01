@@ -194,9 +194,7 @@ public class AdminPageController {
 		adminServInter.execute(model);
 		
 	}
-<<<<<<< HEAD
-=======
-	
+
 	@GetMapping("/product/detail")
 	@ResponseBody
 	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
@@ -241,8 +239,6 @@ public class AdminPageController {
 			adminServInter.execute(model);
 			
 		}
-	
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 
 	@GetMapping("/customer_status")
 	public String customer_status() {

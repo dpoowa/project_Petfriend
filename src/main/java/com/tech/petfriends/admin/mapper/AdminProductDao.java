@@ -21,8 +21,6 @@ public interface AdminProductDao {
 	//어드민 상품옵션등록
 	void adminProductOptAdd(String proCode, String optionName, int optionPrice, int optionCount, int finalPrice, String optCode);
 
-<<<<<<< HEAD
-=======
 	ProductDetailProDto adminDetatilPro(String proCode);
 
 	ProductDetailImgDto adminDetailImg(String proCode);
@@ -36,6 +34,5 @@ public interface AdminProductDao {
 
 	void adminProductImgDelete(String proCode);
 
->>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 	
 }
