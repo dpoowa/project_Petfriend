@@ -1,7 +1,6 @@
 package com.tech.petfriends.admin.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,6 @@ import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
-import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
@@ -41,13 +39,13 @@ public class AdminPageController {
 
 	@Autowired
 	AdminPageDao adminDao;
-	
+
 	@Autowired
 	NoticeDao noticeDao;
-	
+
 	@Autowired
 	CouponDao couponDao;
-	
+
 	@Autowired
 	AdminProductDao adminProductDao;
 
@@ -139,109 +137,104 @@ public class AdminPageController {
 
 		String cp_no = request.getParameter("cpNo");
 		couponDto.setCp_no(Integer.parseInt(cp_no));
-		
+
 		couponDao.updateCoupon(couponDto);
-		
-	    return "redirect:/admin/coupon";
+
+		return "redirect:/admin/coupon";
 	}
-	
+
 	@DeleteMapping("/coupon/delete")
 	@ResponseBody
 	public String deleteCoupon(HttpServletRequest request) {
 
 		String cp_no = request.getParameter("cpNo");
-		
+
 		couponDao.deleteCoupon(cp_no);
-	    
-	    return "redirect:/admin/coupon";
+
+		return "redirect:/admin/coupon";
 	}
-	
+
 	@GetMapping("/product")
 	public String product() {
 		return "admin/product";
 	}
-	
-	//관리자페이지 상품리스트 조회
+
+	// 관리자페이지 상품리스트 조회
 	@PostMapping("/product/list")
 	@ResponseBody
-	public List<ProductListDto> productList(@RequestBody Map<String, Object> data,Model model) {
+	public List<ProductListDto> productList(@RequestBody Map<String, Object> data, Model model) {
 		model.addAllAttributes(data);
-		
+
 		adminServInter = new AdminProductListService(adminProductDao);
 		adminServInter.execute(model);
-		
+
 		@SuppressWarnings("unchecked")
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
-		
+
 		return productList;
 	}
-	
-	//관리자페이지 상품 등록
+
+	// 관리자페이지 상품 등록
 	@PostMapping("/product/add")
 	@ResponseBody
-	 public void productAdd(
-			 	@RequestParam Map<String, Object> data,
-		        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
-		        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
-		        @RequestParam(value = "options") String options,
-		        Model model) {
-		
+	public void productAdd(@RequestParam Map<String, Object> data,
+			@RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+			@RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+			@RequestParam(value = "options") String options, Model model) {
+
 		// Model에 데이터 추가
 		model.addAllAttributes(data);
-	    model.addAttribute("mainImages", mainImages);
-	    model.addAttribute("desImages", desImages);
-	    model.addAttribute("options", options);
-		
+		model.addAttribute("mainImages", mainImages);
+		model.addAttribute("desImages", desImages);
+		model.addAttribute("options", options);
+
 		adminServInter = new AdminProductAddService(adminProductDao);
 		adminServInter.execute(model);
-		
+
 	}
-	
+
 	@GetMapping("/product/detail")
 	@ResponseBody
 	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
-		
+
 		String proCode = request.getParameter("proCode");
-		model.addAttribute("proCode",proCode);
-		
+		model.addAttribute("proCode", proCode);
+
 		adminServInter = new AdminProductDetailService(adminProductDao);
 		adminServInter.execute(model);
-		
+
 		Map<String, Object> data = new HashMap<>();
 		data.put("pro", model.getAttribute("pro"));
 		data.put("img", model.getAttribute("img"));
 		data.put("opt", model.getAttribute("opt"));
-		
+
 		return data;
 	}
-	
-	//관리자페이지 상품 등록
-		@PostMapping("/product/modify")
-		@ResponseBody
-		 public void productModify(
-				 	@RequestParam Map<String, Object> data,
-			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
-			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
-			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
-			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
-			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
-			        @RequestParam(value = "options") String options,
-			        Model model) {
-			
-			// Model에 데이터 추가
-			model.addAllAttributes(data);
-		    model.addAttribute("mainImages", mainImages);
-		    model.addAttribute("desImages", desImages);
-		    model.addAttribute("removeImages", removeImages);
-		    model.addAttribute("options", options);
-		    model.addAttribute("mainImagesPath", mainImagesPath);
-		    model.addAttribute("desImagesPath", desImagesPath);
-			
-			adminServInter = new AdminProductModifyService(adminProductDao);
-			adminServInter.execute(model);
-			
-		}
-	
+
+	// 관리자페이지 상품 등록
+	@PostMapping("/product/modify")
+	@ResponseBody
+	public void productModify(@RequestParam Map<String, Object> data,
+			@RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+			@RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+			@RequestParam(value = "removeImages", required = false) String[] removeImages,
+			@RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
+			@RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
+			@RequestParam(value = "options") String options, Model model) {
+
+		// Model에 데이터 추가
+		model.addAllAttributes(data);
+		model.addAttribute("mainImages", mainImages);
+		model.addAttribute("desImages", desImages);
+		model.addAttribute("removeImages", removeImages);
+		model.addAttribute("options", options);
+		model.addAttribute("mainImagesPath", mainImagesPath);
+		model.addAttribute("desImagesPath", desImagesPath);
+
+		adminServInter = new AdminProductModifyService(adminProductDao);
+		adminServInter.execute(model);
+
+	}
 
 	@GetMapping("/customer_status")
 	public String customer_status() {
@@ -271,11 +264,11 @@ public class AdminPageController {
 	@GetMapping("/notice")
 	public String NoticeWrite(Model model) {
 		ArrayList<NoticeDto> noticeAdminList = noticeDao.NoticeAdminList();
-        model.addAttribute("noticeAdminList", noticeAdminList);
-		
+		model.addAttribute("noticeAdminList", noticeAdminList);
+
 		return "admin/notice";
 	}
-	
+
 	@GetMapping("/notice_write")
 	public String Notice() {
 		System.out.println("글작성페이지");
