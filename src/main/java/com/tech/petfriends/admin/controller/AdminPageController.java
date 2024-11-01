@@ -28,6 +28,7 @@ import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductListService;
+import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -193,6 +194,55 @@ public class AdminPageController {
 		adminServInter.execute(model);
 		
 	}
+<<<<<<< HEAD
+=======
+	
+	@GetMapping("/product/detail")
+	@ResponseBody
+	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
+		
+		String proCode = request.getParameter("proCode");
+		model.addAttribute("proCode",proCode);
+		
+		adminServInter = new AdminProductDetailService(adminProductDao);
+		adminServInter.execute(model);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("pro", model.getAttribute("pro"));
+		data.put("img", model.getAttribute("img"));
+		data.put("opt", model.getAttribute("opt"));
+		
+		return data;
+	}
+	
+	//관리자페이지 상품 등록
+		@PostMapping("/product/modify")
+		@ResponseBody
+		 public void productModify(
+				 	@RequestParam Map<String, Object> data,
+			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
+			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
+			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
+			        @RequestParam(value = "options") String options,
+			        Model model) {
+			
+			// Model에 데이터 추가
+			model.addAllAttributes(data);
+		    model.addAttribute("mainImages", mainImages);
+		    model.addAttribute("desImages", desImages);
+		    model.addAttribute("removeImages", removeImages);
+		    model.addAttribute("options", options);
+		    model.addAttribute("mainImagesPath", mainImagesPath);
+		    model.addAttribute("desImagesPath", desImagesPath);
+			
+			adminServInter = new AdminProductModifyService(adminProductDao);
+			adminServInter.execute(model);
+			
+		}
+	
+>>>>>>> 8e945f47f59749f8cd99602861cc39c1725037d8
 
 	@GetMapping("/customer_status")
 	public String customer_status() {
