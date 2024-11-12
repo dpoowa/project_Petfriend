@@ -1,10 +1,11 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.notice;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.tech.petfriends.admin.service.AdminExecuteModel;
 import com.tech.petfriends.notice.dao.NoticeDao;
 
 @Service

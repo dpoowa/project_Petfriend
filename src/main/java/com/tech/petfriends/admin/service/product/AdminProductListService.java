@@ -1,4 +1,4 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
+import com.tech.petfriends.admin.service.AdminExecuteModel;
 
 public class AdminProductListService implements AdminExecuteModel {
 

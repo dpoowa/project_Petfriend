@@ -2,42 +2,30 @@ package com.tech.petfriends.admin.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tech.petfriends.admin.dto.CouponDto;
-import com.tech.petfriends.admin.dto.MemberCouponDto;
-import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
-import com.tech.petfriends.admin.service.AdminEventEditService;
 import com.tech.petfriends.admin.service.AdminExecuteModel;
-import com.tech.petfriends.admin.service.AdminNoticeEditService;
-import com.tech.petfriends.admin.service.AdminNoticeWriteService;
-import com.tech.petfriends.admin.service.AdminProductAddService;
-import com.tech.petfriends.admin.service.AdminProductDetailService;
-import com.tech.petfriends.admin.service.AdminProductListService;
-import com.tech.petfriends.admin.service.AdminProductModifyService;
-import com.tech.petfriends.admin.service.AdminSalesDetailService;
+import com.tech.petfriends.admin.service.AdminExecuteModelRequest;
 import com.tech.petfriends.admin.service.AdminSalesService;
+import com.tech.petfriends.admin.service.notice.AdminEventEditService;
+import com.tech.petfriends.admin.service.notice.AdminNoticeEditService;
+import com.tech.petfriends.admin.service.notice.AdminNoticeWriteService;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.notice.dao.NoticeDao;
@@ -56,10 +44,7 @@ public class AdminPageController {
 	
 	@Autowired
 	CouponDao couponDao;
-	
-	@Autowired
-	AdminProductDao adminProductDao;
-	
+		
 	@Autowired
 	AdminSalesDao adminSalesDao;
   
@@ -67,6 +52,8 @@ public class AdminPageController {
 	MemberMapper memberDao;
 
 	AdminExecuteModel adminExcuteM;
+
+	AdminExecuteModelRequest adminExcuteMR;
 	
 
 	// 어드민 페이지 내부에서의 펫티쳐페이지로 이동
@@ -90,37 +77,6 @@ public class AdminPageController {
 		return "admin/coupon";
 	}
 
-	@GetMapping("/coupon/data")
-	@ResponseBody
-	public List<CouponDto> getCouponData(HttpServletRequest request) {
-
-		String status = request.getParameter("status");
-		String kind = request.getParameter("kind");
-		String type = request.getParameter("type");
-		String sort = request.getParameter("sort");
-
-		List<CouponDto> coupons = couponDao.getAllCoupons(status, kind, type, sort);
-
-		return coupons;
-	}
-
-	@GetMapping("/memberCoupon/data")
-	@ResponseBody
-	public List<MemberCouponDto> getMemberCouponData(HttpServletRequest request) {
-
-		String status = request.getParameter("status");
-		String searchOrder = request.getParameter("searchOrder");
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
-		String memberCode = request.getParameter("memberCode");
-		String couponCode = request.getParameter("couponCode");
-		String orderCode = request.getParameter("orderCode");
-
-		List<MemberCouponDto> coupons = couponDao.getMemberCoupons(status, searchOrder, startDate, endDate, memberCode,
-				couponCode, orderCode);
-		return coupons;
-	}
-
 	@PostMapping("/coupon/register")
 	public String registerCoupon(@RequestBody CouponDto couponDto) {
 
@@ -129,127 +85,11 @@ public class AdminPageController {
 		return "redirect:/admin/coupon";
 	}
 
-	@GetMapping("/coupon/modify")
-	@ResponseBody
-	public CouponDto getCoupon(HttpServletRequest request) {
-
-		String cp_no = request.getParameter("cpNo");
-
-		CouponDto coupon = couponDao.getCouponById(cp_no);
-
-		return coupon;
-	}
-
-	@PutMapping("/coupon/update")
-	@ResponseBody
-	public String updateCoupon(HttpServletRequest request, @RequestBody CouponDto couponDto) {
-
-		String cp_no = request.getParameter("cpNo");
-		couponDto.setCp_no(Integer.parseInt(cp_no));
-		
-		couponDao.updateCoupon(couponDto);
-		
-	    return "redirect:/admin/coupon";
-	}
-	
-	@DeleteMapping("/coupon/delete")
-	@ResponseBody
-	public String deleteCoupon(HttpServletRequest request) {
-
-		String cp_no = request.getParameter("cpNo");
-		
-		couponDao.deleteCoupon(cp_no);
-	    
-	    return "redirect:/admin/coupon";
-	}
-	
 	@GetMapping("/product")
 	public String product() {
 		return "admin/product";
 	}
 	
-	//관리자페이지 상품리스트 조회
-	@PostMapping("/product/list")
-	@ResponseBody
-	public List<ProductListDto> productList(@RequestBody Map<String, Object> data,Model model) {
-		model.addAllAttributes(data);
-		
-		adminExcuteM = new AdminProductListService(adminProductDao);
-		adminExcuteM.execute(model);
-		
-		@SuppressWarnings("unchecked")
-		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
-		
-		return productList;
-	}
-	
-	//관리자페이지 상품 등록
-	@PostMapping("/product/add")
-	@ResponseBody
-	 public void productAdd(
-			 	@RequestParam Map<String, Object> data,
-		        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
-		        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
-		        @RequestParam(value = "options") String options,
-		        Model model) {
-		
-		// Model에 데이터 추가
-		model.addAllAttributes(data);
-	    model.addAttribute("mainImages", mainImages);
-	    model.addAttribute("desImages", desImages);
-	    model.addAttribute("options", options);
-		
-		adminExcuteM = new AdminProductAddService(adminProductDao);
-		adminExcuteM.execute(model);
-		
-	}
-	
-	@GetMapping("/product/detail")
-	@ResponseBody
-	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
-		
-		String proCode = request.getParameter("proCode");
-		model.addAttribute("proCode",proCode);
-		
-		adminExcuteM = new AdminProductDetailService(adminProductDao);
-		adminExcuteM.execute(model);
-		
-		Map<String, Object> data = new HashMap<>();
-		data.put("pro", model.getAttribute("pro"));
-		data.put("img", model.getAttribute("img"));
-		data.put("opt", model.getAttribute("opt"));
-		
-		return data;
-	}
-	
-	//관리자페이지 상품 등록
-		@PostMapping("/product/modify")
-		@ResponseBody
-		 public void productModify(
-				 	@RequestParam Map<String, Object> data,
-			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
-			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
-			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
-			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
-			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
-			        @RequestParam(value = "options") String options,
-			        Model model) {
-			
-			// Model에 데이터 추가
-			model.addAllAttributes(data);
-		    model.addAttribute("mainImages", mainImages);
-		    model.addAttribute("desImages", desImages);
-		    model.addAttribute("removeImages", removeImages);
-		    model.addAttribute("options", options);
-		    model.addAttribute("mainImagesPath", mainImagesPath);
-		    model.addAttribute("desImagesPath", desImagesPath);
-			
-			adminExcuteM = new AdminProductModifyService(adminProductDao);
-			adminExcuteM.execute(model);
-			
-		}
-	
-
 	@GetMapping("/customer_status")
 	public String customer_status(Model model) {
 		System.out.println("고객");
@@ -296,9 +136,9 @@ public class AdminPageController {
 
 	@GetMapping("/notice")
 	public String Notice(Model model) {
-		ArrayList<NoticeDto> noticeAdminList = noticeDao.noticeAdminList();
+//		ArrayList<NoticeDto> noticeAdminList = noticeDao.noticeAdminList();
 //        model.addAttribute("noticeAdminList", noticeAdminList);
-        ArrayList<EventDto> eventAdminList = noticeDao.eventAdminList();
+//        ArrayList<EventDto> eventAdminList = noticeDao.eventAdminList();
 //        model.addAttribute("eventAdminList", eventAdminList);
 		
 		return "admin/notice";
@@ -312,8 +152,8 @@ public class AdminPageController {
 	
 	@PostMapping("/notice_write_service")
 	public String Notice_write_service(HttpServletRequest request, 
-	                                   @RequestParam("thumbnail") MultipartFile thumbnail,
-	                                   @RequestParam("slideImg") MultipartFile slideImg, 
+	                                   @RequestParam MultipartFile thumbnail,
+	                                   @RequestParam MultipartFile slideImg, 
 	                                   Model model) {
 	    model.addAttribute("request", request);
 	    model.addAttribute("thumbnail", thumbnail);
@@ -403,16 +243,6 @@ public class AdminPageController {
 		return "admin/sales";
 	}
 	
-	@PostMapping("/salesDetail")
-	@ResponseBody
-	public void salesDetail(@RequestBody Map<String, Object> data, Model model) {
-		
-		model.addAllAttributes(data);
-		adminExcuteM = new AdminSalesDetailService(adminSalesDao);
-		adminExcuteM.execute(model);
-		
-	}
-
 	@GetMapping("/customer")
 	public String customer() {
 		return "admin/customer";

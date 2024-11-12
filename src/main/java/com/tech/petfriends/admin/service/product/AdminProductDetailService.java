@@ -1,4 +1,4 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.product;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import com.tech.petfriends.admin.dto.ProductDetailImgDto;
 import com.tech.petfriends.admin.dto.ProductDetailOptDto;
 import com.tech.petfriends.admin.dto.ProductDetailProDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
+import com.tech.petfriends.admin.service.AdminExecuteModel;
 
 public class AdminProductDetailService implements AdminExecuteModel {
 
