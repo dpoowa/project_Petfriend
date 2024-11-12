@@ -29,7 +29,7 @@ import com.tech.petfriends.notice.dto.NoticeDto;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminNoticeRestController {
+public class AdminNoticeEventRestController {
 
 	@Autowired
 	AdminPageDao adminDao;

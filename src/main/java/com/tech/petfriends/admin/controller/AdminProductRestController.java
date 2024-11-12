@@ -1,6 +1,5 @@
 package com.tech.petfriends.admin.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.service.AdminExecuteModel;
+import com.tech.petfriends.admin.service.AdminExecuteModelRequest;
 import com.tech.petfriends.admin.service.product.AdminProductAddService;
 import com.tech.petfriends.admin.service.product.AdminProductDetailService;
 import com.tech.petfriends.admin.service.product.AdminProductListService;
@@ -29,22 +29,21 @@ import com.tech.petfriends.admin.service.product.AdminProductModifyService;
 public class AdminProductRestController {
 
 	AdminExecuteModel adminExcuteM;
+
+	AdminExecuteModelRequest adminExcuteMR;
 	
 	@Autowired
 	AdminProductDao adminProductDao;
 
 	//관리자페이지 상품리스트 조회
+	@SuppressWarnings("unchecked")
 	@PostMapping("/product/list")
-	public List<ProductListDto> productList(@RequestBody Map<String, Object> data,Model model) {
-		model.addAllAttributes(data);
+	public List<ProductListDto> productList(@RequestBody Map<String, Object> data, Model model) {
 		
-		adminExcuteM = new AdminProductListService(adminProductDao);
+		adminExcuteM = new AdminProductListService(adminProductDao, data);
 		adminExcuteM.execute(model);
 		
-		@SuppressWarnings("unchecked")
-		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
-		
-		return productList;
+		return (List<ProductListDto>) model.getAttribute("productList");
 	}
 	
 	//관리자페이지 상품 등록
@@ -56,32 +55,17 @@ public class AdminProductRestController {
 		        @RequestParam String options,
 		        Model model) {
 		
-		// Model에 데이터 추가
-		model.addAllAttributes(data);
-	    model.addAttribute("mainImages", mainImages);
-	    model.addAttribute("desImages", desImages);
-	    model.addAttribute("options", options);
-		
-		adminExcuteM = new AdminProductAddService(adminProductDao);
+		adminExcuteM = new AdminProductAddService(adminProductDao, data, mainImages, desImages, options);
 		adminExcuteM.execute(model);
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/product/detail")
 	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
-		
-		String proCode = request.getParameter("proCode");
-		model.addAttribute("proCode",proCode);
-		
-		adminExcuteM = new AdminProductDetailService(adminProductDao);
-		adminExcuteM.execute(model);
-		
-		Map<String, Object> data = new HashMap<>();
-		data.put("pro", model.getAttribute("pro"));
-		data.put("img", model.getAttribute("img"));
-		data.put("opt", model.getAttribute("opt"));
-		
-		return data;
+		adminExcuteMR = new AdminProductDetailService(adminProductDao);
+		adminExcuteMR.execute(model, request);
+		return (Map<String, Object>) model.getAttribute("data");
 	}
 	
 	//관리자페이지 상품 등록
@@ -95,17 +79,9 @@ public class AdminProductRestController {
 			        @RequestParam(required = false) List<String> desImagesPath,
 			        @RequestParam String options,
 			        Model model) {
-			
-			// Model에 데이터 추가
-			model.addAllAttributes(data);
-		    model.addAttribute("mainImages", mainImages);
-		    model.addAttribute("desImages", desImages);
-		    model.addAttribute("removeImages", removeImages);
-		    model.addAttribute("options", options);
-		    model.addAttribute("mainImagesPath", mainImagesPath);
-		    model.addAttribute("desImagesPath", desImagesPath);
-			
-			adminExcuteM = new AdminProductModifyService(adminProductDao);
+
+			adminExcuteM = new AdminProductModifyService(adminProductDao, data, mainImages,
+					desImages, removeImages, mainImagesPath, desImagesPath, options);
 			adminExcuteM.execute(model);
 			
 		}

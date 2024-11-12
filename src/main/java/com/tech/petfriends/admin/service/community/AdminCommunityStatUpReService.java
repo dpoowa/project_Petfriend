@@ -1,39 +1,38 @@
 package com.tech.petfriends.admin.service.community;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.service.AdminExecuteModel;
 
-
-public class AdminCommunityReportService implements AdminExecuteModel {
+@Service
+public class AdminCommunityStatUpReService implements AdminExecuteModel {
 
 	private AdminCommunityDao admincommunityDao;
-
-	public AdminCommunityReportService(AdminCommunityDao admincommunityDao) {
+	
+	private ArrayList<Map<String, Object>> selectedReport;
+	
+	public AdminCommunityStatUpReService(AdminCommunityDao admincommunityDao, ArrayList<Map<String, Object>> selectedReport) {
 		this.admincommunityDao = admincommunityDao;
+		this.selectedReport = selectedReport;
 	}
 
 	 @Override
 	 public void execute(Model model) {		  
-		  Map<String, Object> requestData = model.asMap();
-		  
-		  ArrayList<Map<String, Object>> reportno= (ArrayList<Map<String, Object>>) requestData.get("selectedReport");
-		  System.out.println("reportno: "+ reportno);
 		  
 		  Map<String, Object> reportNoMap;
-		  for(int i = 0; i < reportno.size(); i++) {			  
-			   reportNoMap = reportno.get(i);		  		  		  
-			int reportid = Integer.parseInt((String) reportNoMap.get("reportNo"));
-			   System.out.println("DATA: "+ i +"||    " + reportNoMap.get("reportNo"));
-			   admincommunityDao.reportStatusUpdate(reportid);
-			   System.out.println(reportNoMap.get("reportNo").getClass().getName());
+		  
+		  for(int i = 0; i < selectedReport.size(); i++) {
+			  
+			  reportNoMap = selectedReport.get(i);
+			  
+			  int reportid = Integer.parseInt((String) reportNoMap.get("reportNo"));
+			  
+			  admincommunityDao.reportStatusUpdate(reportid);
 			  
 		  }
 		  

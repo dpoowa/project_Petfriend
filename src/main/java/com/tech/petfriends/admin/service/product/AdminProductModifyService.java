@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,28 +19,43 @@ import com.tech.petfriends.admin.service.AdminExecuteModel;
 public class AdminProductModifyService implements AdminExecuteModel {
 
 	private AdminProductDao adminProductDao;
+ 	private Map<String, Object> data;
+    private MultipartFile[] mainImages;
+    private MultipartFile[] desImages;
+    private String[] removeImages;
+    private List<String> mainImagesPath;
+    private List<String> desImagesPath;
+    private String options;
 
-	public AdminProductModifyService(AdminProductDao adminProductDao) {
+	public AdminProductModifyService(AdminProductDao adminProductDao,
+			Map<String, Object> data, MultipartFile[] mainImages, 
+			MultipartFile[] desImages, String[] removeImages, 
+			List<String> mainImagesPath, List<String> desImagesPath, 
+			String options) {
 		this.adminProductDao = adminProductDao;
+		this.data = data;
+		this.mainImages = mainImages;
+		this.desImages = desImages;
+		this.removeImages = removeImages;
+		this.mainImagesPath = mainImagesPath;
+		this.desImagesPath = desImagesPath;
+		this.options = options;
 	}
-
+	
 	@Transactional
 	@Override
 	public void execute(Model model) {
-		// 모델에서 데이터 가져오기
-		String petType = (String) model.getAttribute("petType"); // 반려동물 유형
-		String proType = (String) model.getAttribute("proType"); // 제품 유형
-		String proDetailType = (String) model.getAttribute("proDetailType"); // 제품 세부 유형
-		String filterType1 = (String) model.getAttribute("filterType1"); // 필터 유형 1
-		String filterType2 = (String) model.getAttribute("filterType2"); // 필터 유형 2
-		String proName = (String) model.getAttribute("proName"); // 제품 이름
-		String proDiscountStr = (String) model.getAttribute("proDiscount"); // 제품 할인 값을 String으로 가져오기
+		// 데이터 가져오기
+		String petType = (String) data.get("petType"); // 반려동물 유형
+		String proType = (String) data.get("proType"); // 제품 유형
+		String proDetailType = (String) data.get("proDetailType"); // 제품 세부 유형
+		String filterType1 = (String) data.get("filterType1"); // 필터 유형 1
+		String filterType2 = (String) data.get("filterType2"); // 필터 유형 2
+		String proName = (String) data.get("proName"); // 제품 이름
+		String proDiscountStr = (String) data.get("proDiscount"); // 제품 할인 값을 String으로 가져오기
 		int proDiscount = Integer.parseInt(proDiscountStr); // String을 int로 변환하기
-		String productStatus = (String) model.getAttribute("productStatus"); // 제품 상태
-		String proCode = (String) model.getAttribute("proCode");
-		String options = (String) model.getAttribute("options");
-		List<String> mainImagesPath = (List<String>) model.getAttribute("mainImagesPath");
-		List<String> desImagesPath = (List<String>) model.getAttribute("desImagesPath");
+		String productStatus = (String) data.get("productStatus"); // 제품 상태
+		String proCode = (String) data.get("proCode");
 
 		System.out.println(proCode);
 
@@ -55,13 +68,6 @@ public class AdminProductModifyService implements AdminExecuteModel {
 		// 상품수정
 		adminProductDao.adminProductProModify(proCode, proName, petType, proType, proDetailType, filterType1,
 				filterType2, proDiscount, productStatus);
-
-		// 이미지 파일 가져오기
-		MultipartFile[] mainImages = (MultipartFile[]) model.getAttribute("mainImages"); // 대표 이미지
-		MultipartFile[] desImages = (MultipartFile[]) model.getAttribute("desImages"); // 상세 이미지
-		String[] removeImages = (String[]) model.getAttribute("removeImages"); // 상세 이미지
-
-		
 
 		// db에 수정될 데이터값 기존이미지명 경로값 제거
 		if (desImagesPath != null) {

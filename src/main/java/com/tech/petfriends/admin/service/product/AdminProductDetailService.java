@@ -1,6 +1,10 @@
 package com.tech.petfriends.admin.service.product;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
@@ -8,9 +12,9 @@ import com.tech.petfriends.admin.dto.ProductDetailImgDto;
 import com.tech.petfriends.admin.dto.ProductDetailOptDto;
 import com.tech.petfriends.admin.dto.ProductDetailProDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
-import com.tech.petfriends.admin.service.AdminExecuteModel;
+import com.tech.petfriends.admin.service.AdminExecuteModelRequest;
 
-public class AdminProductDetailService implements AdminExecuteModel {
+public class AdminProductDetailService implements AdminExecuteModelRequest {
 
 	private AdminProductDao adminProductDao;
 
@@ -19,10 +23,10 @@ public class AdminProductDetailService implements AdminExecuteModel {
 	}
 
 	@Override
-	public void execute(Model model) {
-		String proCode = (String) model.getAttribute("proCode");
+	public void execute(Model model, HttpServletRequest request) {
+		String proCode = request.getParameter("proCode");
 
-		System.out.println("나는 코드가말이야 ~~ "+proCode);
+		//System.out.println("나는 코드가말이야 ~~ "+proCode);
 		
 		ProductDetailProDto pro = adminProductDao.adminDetatilPro(proCode);
 		
@@ -30,13 +34,13 @@ public class AdminProductDetailService implements AdminExecuteModel {
 		
 		List<ProductDetailOptDto> opt = adminProductDao.adminDetailOpt(proCode);
 		
-		model.addAttribute("pro", pro);
-		model.addAttribute("img", img);
-		model.addAttribute("opt", opt);
 		
+		Map<String, Object> data = new HashMap<>();
+		data.put("pro", pro); 
+		data.put("img", img); 
+		data.put("opt", opt); 
 		
-		
-		
+		model.addAttribute("data", data);
 	}
 
 }

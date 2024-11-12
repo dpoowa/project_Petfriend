@@ -19,25 +19,35 @@ import com.tech.petfriends.admin.service.AdminExecuteModel;
 public class AdminProductAddService implements AdminExecuteModel {
 
 	private AdminProductDao adminProductDao;
-
-	public AdminProductAddService(AdminProductDao adminProductDao) {
+ 	private Map<String, Object> data;
+    private MultipartFile[] mainImages;
+    private MultipartFile[] desImages;
+    private String options;
+    
+	public AdminProductAddService(AdminProductDao adminProductDao,
+			Map<String, Object> data, MultipartFile[] mainImages,
+			MultipartFile[] desImages, String options
+			) {
 		this.adminProductDao = adminProductDao;
+		this.data = data;
+		this.mainImages = mainImages;
+		this.desImages = desImages;
+		this.options = options;
 	}
-
+	
 	@Transactional
 	@Override
 	public void execute(Model model) {
 		// 모델에서 데이터 가져오기
-		String petType = (String) model.getAttribute("petType"); // 반려동물 유형
-		String proType = (String) model.getAttribute("proType"); // 제품 유형
-		String proDetailType = (String) model.getAttribute("proDetailType"); // 제품 세부 유형
-		String filterType1 = (String) model.getAttribute("filterType1"); // 필터 유형 1
-		String filterType2 = (String) model.getAttribute("filterType2"); // 필터 유형 2
-		String proName = (String) model.getAttribute("proName"); // 제품 이름
-		String proDiscountStr = (String) model.getAttribute("proDiscount"); // 제품 할인 값을 String으로 가져오기
+		String petType = (String) data.get("petType"); // 반려동물 유형
+		String proType = (String) data.get("proType"); // 제품 유형
+		String proDetailType = (String) data.get("proDetailType"); // 제품 세부 유형
+		String filterType1 = (String) data.get("filterType1"); // 필터 유형 1
+		String filterType2 = (String) data.get("filterType2"); // 필터 유형 2
+		String proName = (String) data.get("proName"); // 제품 이름
+		String proDiscountStr = (String) data.get("proDiscount"); // 제품 할인 값을 String으로 가져오기
 		int proDiscount = Integer.parseInt(proDiscountStr); // String을 int로 변환하기
-		String productStatus = (String) model.getAttribute("productStatus"); // 제품 상태
-		String options = (String)model.getAttribute("options");
+		String productStatus = (String) data.get("productStatus"); // 제품 상태
 		String proCode = UUID.randomUUID().toString();
 
 		filterType1 = ifNull(filterType1);
@@ -46,9 +56,6 @@ public class AdminProductAddService implements AdminExecuteModel {
 		//상품등록
 		adminProductDao.adminProductAdd(proCode,proName,petType,proType,proDetailType,filterType1,filterType2,proDiscount,productStatus);
 
-		// 이미지 파일 가져오기
-		MultipartFile[] mainImages = (MultipartFile[]) model.getAttribute("mainImages"); // 대표 이미지
-		MultipartFile[] desImages = (MultipartFile[]) model.getAttribute("desImages"); // 상세 이미지
 		// option java list로 변환
 		List<Map<String, Object>> optionList = makeList(options);
 		
