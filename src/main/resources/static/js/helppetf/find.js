@@ -49,8 +49,6 @@ $(document).ready(function() {
 		})
 			.then(response => {
 				if (response.ok) {
-					// 서버에 데이터 전송 성공 후 간단히 콘솔에 로그 출력
-					console.log('Data successfully sent to server');
 					return response.json();
 				} else {
 					console.error('Failed to send data');
@@ -328,16 +326,15 @@ $(document).ready(function() {
 				    map: roadview, //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
 					image: makerImage
 				});
-			    rMarker.setAltitude(6); //마커의 높이를 설정합니다. (단위는 m입니다.)
-			    rMarker.setRange(100); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
 				
 				// 로드뷰에 올릴 장소명 인포윈도우를 생성합니다.
 				var rLabel = new kakao.maps.InfoWindow({
 				    position: placePosition
 				});
 				
-				var content = '<div class="roadview-marker" style="width:150px; text-align:center; font-family: sans-serif; padding:10px 9px; z-index: 1;">'
-												+ placeName + '</div>';
+				var content = `<div class="roadview-marker" style="width:150px; 
+								text-align:center; font-family: sans-serif; 
+								padding:10px 9px; z-index: 1;">${placeName}</div>`;
 				rLabel.setContent(content); // 인포윈도우의 내용 설정
 			    rLabel.setRange(100); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
 			    rLabel.open(roadview, rMarker); // open시 마커를 넣어주면, 마커의 altitude와 position값을 모두 따라 갑니다.				

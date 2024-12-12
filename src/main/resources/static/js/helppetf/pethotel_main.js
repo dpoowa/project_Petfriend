@@ -167,10 +167,6 @@ $(document).ready(function() {
 		}
 	}
 
-
-	// 반려동물 폼의 데이터를 저장할 오브젝트 초기화
-	const formDataObj = [];
-
 	// + (추가) 버튼 클릭시 form을 띄우고 페이지 스크롤
 	$('.add-pet-button').on('click', function() {
 		$('#popup-form').removeClass().addClass('flex');
@@ -232,10 +228,13 @@ $(document).ready(function() {
 	$('#pet-birth').attr('max', today);
 
 	// 아이 선택하기 모달창의 x버튼(닫기)를 클릭시
-	$(document).on('click','.modal-close-btn', function() {
+	$(document).on('click', '.modal-close-btn', function() {
 		closeModal();
 	});
 
+	// 반려동물 폼의 데이터를 저장할 오브젝트 초기화
+	const formDataObj = [];
+	
 	$('#save-pet').on('click', function() {
 		// 각 form 의 input에 대한 데이터를 변수에 저장
 		let petHiddenVal = $('#pet-form-no').val();
@@ -254,25 +253,23 @@ $(document).ready(function() {
 			const newPet = $('<div>'); // newPet 변수 생성, 변수에 div element 생성
 			newPet.addClass('registered-pet-circle'); // newPet element에 클래스 추가 --> <div class="어쩌구"></div>
 
-			// petHiddenVal 값을 배열의 인덱스로 사용하여 각 펫의 정보를 저장함
-			// 배열의 petHiddenVal의 값에 해당하는 index가 없다면,
-			// 해당 값의 index를 생성하여 새로운 펫 정보를 저장함.
-			if (!formDataObj[Number(petHiddenVal)]) {
-				formDataObj[Number(petHiddenVal)] = {};
-			}
+			let data = {
+				hphp_reserve_pet_no: petHiddenVal,
+				hphp_pet_name: petName,
+				hphp_pet_type: petType,
+				hphp_pet_birth: petBirth,
+				hphp_pet_gender: petGender,
+				hphp_pet_weight: petWeight,
+				hphp_pet_neut: petNeutered,
+				hphp_comment: petMessage
+			};
 
-			// formDataObj의 [input-hidden의 value]에 { key : value } 삽입
-			formDataObj[petHiddenVal].hphp_reserve_pet_no = petHiddenVal;
-			formDataObj[petHiddenVal].hphp_pet_name = petName;
-			formDataObj[petHiddenVal].hphp_pet_type = petType;
-			formDataObj[petHiddenVal].hphp_pet_birth = petBirth;
-			formDataObj[petHiddenVal].hphp_pet_gender = petGender;
-			formDataObj[petHiddenVal].hphp_pet_weight = petWeight;
-			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
-			formDataObj[petHiddenVal].hphp_comment = petMessage;
+			formDataObj.push(data);
+
 			// 등록한 순서 +1 해서 폼 넘버의 id값 변경
 			$('#pet-form-no').val(Number(petHiddenVal) + 1)
-
+			
+			
 			// newPet element의 내부에 (현재로서는 div 태그 안쪽)			
 			// ` <span class="pet-name">${저장해둔 동물 이름}</span>
 			//	 <button class="delete-button">X</button> ` 를 삽입

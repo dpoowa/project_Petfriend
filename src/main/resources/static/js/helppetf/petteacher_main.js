@@ -68,6 +68,8 @@ $(document).ready(function() {
 				setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
 			},
 			error: function(xhr, status, error) {
+				console.log('xhr', xhr.responseJSON)
+				console.log('status', status)
 				console.error('Error fetching data:', error);
 			}
 		});
