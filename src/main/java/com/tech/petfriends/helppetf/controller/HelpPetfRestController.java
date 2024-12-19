@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
-import com.tech.petfriends.helppetf.service.group.HelppetfServiceGroup;
+import com.tech.petfriends.helppetf.service.group.HelppetfServiceGroupMain;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
@@ -25,9 +25,9 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/helppetf")
 public class HelpPetfRestController {
 	
-	final HelppetfServiceGroup serviceGroup;
+	final HelppetfServiceGroupMain serviceGroup;
 	
-	public HelpPetfRestController(HelppetfServiceGroup serviceGroup) {
+	public HelpPetfRestController(HelppetfServiceGroupMain serviceGroup) {
 		this.serviceGroup = serviceGroup;
 	}
 	

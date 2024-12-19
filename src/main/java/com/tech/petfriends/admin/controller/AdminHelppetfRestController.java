@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tech.petfriends.admin.service.group.AdminHelppetfServiceGroup;
+import com.tech.petfriends.admin.service.group.AdminHelppetfServiceGroupMain;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
@@ -24,9 +24,9 @@ import com.tech.petfriends.helppetf.dto.PetteacherDto;
 @RequestMapping("/admin")
 public class AdminHelppetfRestController {
 	
-	final AdminHelppetfServiceGroup helppetfServiceGroup;
+	final AdminHelppetfServiceGroupMain helppetfServiceGroup;
 	
-	public AdminHelppetfRestController(AdminHelppetfServiceGroup helppetfServiceGroup) {
+	public AdminHelppetfRestController(AdminHelppetfServiceGroupMain helppetfServiceGroup) {
 		this.helppetfServiceGroup = helppetfServiceGroup;
 	}
 	

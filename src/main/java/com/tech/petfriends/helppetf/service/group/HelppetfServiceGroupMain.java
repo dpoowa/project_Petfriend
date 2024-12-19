@@ -10,13 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
-import com.tech.petfriends.helppetf.service.AdoptionGetJson;
-import com.tech.petfriends.helppetf.service.FindAddrMapService;
-import com.tech.petfriends.helppetf.service.PethotelMainService;
-import com.tech.petfriends.helppetf.service.PethotelReserveService;
-import com.tech.petfriends.helppetf.service.PethotelSelectPetService;
-import com.tech.petfriends.helppetf.service.PetteacherDetailService;
-import com.tech.petfriends.helppetf.service.PetteacherMainService;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
@@ -25,43 +18,39 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Service
-public class HelppetfServiceGroup {
-	private final PethotelSelectPetService pethotelSelectPetService;
-	private final PethotelReserveService pethotelReserveDataService;
-	private final PethotelMainService pethotelMainService;
-	private final AdoptionGetJson adoptionGetJson;
-	private final PetteacherMainService petteacherMainService;
-	private final PetteacherDetailService petteacherDetailService;
-	private final FindAddrMapService findAddrMapService;
-	
+public class HelppetfServiceGroupMain {
+	private final HelppetfPethotelGroup pethotelGroup;
+	private final HelppetfAdoptionGroup adoptionGroup;
+	private final HelppetfPetteacherGroup petteacherGroup;
+	private final HelppetfFindGroup findGroup;
+		
 	public ResponseEntity<ArrayList<MyPetDto>> executePethotelSelectPetService(HttpSession session) {
-		return pethotelSelectPetService.execute(session);
+		return pethotelGroup.executePethotelSelectPetService(session);
 	}
 	
 	public ResponseEntity<String> executePethotelReserveDataService(HttpServletRequest request, 
 			HttpSession session, ArrayList<PethotelFormDataDto> formList) {
-		pethotelReserveDataService.setFormList(formList);
-		return pethotelReserveDataService.execute(request, session);
+		return pethotelGroup.executePethotelReserveDataService(request, session, formList);
 	}
 	
 	public ResponseEntity<String> executePethotelMainService() {
-		return pethotelMainService.execute();
+		return pethotelGroup.executePethotelMainService();
 	}
 
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> executeAdoptionGetJson(HttpServletRequest request) {
-		return adoptionGetJson.execute(request);
+		return adoptionGroup.executeAdoptionGetJson(request);
 	}
 
 	public ResponseEntity<ArrayList<PetteacherDto>> executePetteacherMainService(HttpServletRequest request) {
-		return petteacherMainService.execute(request);
+		return petteacherGroup.executePetteacherMainService(request);
 	}
 	
 	public ResponseEntity<PetteacherDto> executePetteacherDetailService(HttpServletRequest request) {
-		return petteacherDetailService.execute(request);
+		return petteacherGroup.executePetteacherDetailService(request);
 	}
 	
 	public ResponseEntity<String> executeFindAddrMapService(HttpSession session) {
-		return findAddrMapService.execute(session);
+		return findGroup.executeFindAddrMapService(session);
 	}
 	
 }

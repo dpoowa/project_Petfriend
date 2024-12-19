@@ -8,7 +8,6 @@
 <title>펫티쳐</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/petteacher_main.css" />
-<script src="https://lc.getunicorn.org/?type=base-script&request-id=4695" nonce="n2j1kRAvDeyqYfJj-CMvMg"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>

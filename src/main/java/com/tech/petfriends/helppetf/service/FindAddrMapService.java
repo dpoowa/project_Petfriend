@@ -19,9 +19,11 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 public class FindAddrMapService implements HelppetfExecuteSession<String> {
 	
 	private final HelpPetfDao helpDao;
+	private final ObjectMapper objectMapper;
 	
-	public FindAddrMapService(HelpPetfDao helpDao) {
+	public FindAddrMapService(HelpPetfDao helpDao, ObjectMapper objectMapper) {
 		this.helpDao = helpDao;
+		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class FindAddrMapService implements HelppetfExecuteSession<String> {
 		
 		// Map을 json형식으로 변환
 		try {
-			return ResponseEntity.ok(new ObjectMapper().writeValueAsString(map));
+			return ResponseEntity.ok(objectMapper.writeValueAsString(dataMap));
 		} catch (JsonProcessingException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 중 오류 발생");
 		}

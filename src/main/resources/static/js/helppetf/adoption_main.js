@@ -55,27 +55,32 @@ $(document).ready(function() {
 	let totalPages = 0; // 총 페이지 수
 	let preEndPage = 0; // 이전 페이지의 마지막 페이지 번호
 	let formParam = ''; // form (필터) 의 파라미터값
+	
 	fetchData(currentPage, currPageGroup, formParam); // 페이지 로드 시 호출 (formParam은 공백: 필터가 없으므로)
 
 	function fetchData(currentPage, currPageGroup, formParam) {
-		$.ajax({
-			url: '/helppetf/adoption/getJson?pageNo=' + currPageGroup + '&' + formParam, // pageNo에 맞는 데이터 요청-필터링된 API 호출 
-			method: 'GET',
-			dataType: 'json',
-			headers: {
-				'Cache-Control': 'no-cache' // 캐시 없음 설정
-			},
-			success: function(data) {
-				adoptionItems = data.item; // 배열에 아이템 대입
-				totalItems = adoptionItems.length; // 받아온 데이터에서 총 item 수 계산
-				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
-				displayItems(currentPage); // 아이템 표시
-				setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching data:', error);
+		
+		const url = `/helppetf/adoption/getJson?pageNo=${currPageGroup}&${formParam}`;
+		
+		fetch(url ,{
+			method: 'get',
+		})
+		.then(response => {
+			if(!response.ok) {
+				throw new Error(`Http error, status: ${response.status}`);
 			}
-		});
+			return response.json();
+		})
+		.then(data => {
+			adoptionItems = data.item; // 배열에 아이템 대입
+			totalItems = adoptionItems.length; // 받아온 데이터에서 총 item 수 계산
+			totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
+			displayItems(currentPage); // 아이템 표시
+			setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
+		})
+		.catch(error => {
+			console.error('error fetching data: ', error);
+		})
 	}
 
 	// 아이템을 페이지에 맞게 출력
