@@ -48,9 +48,9 @@ public class FindAddrMapService implements HelppetfExecuteSession<String> {
 		}
 		
 		// 데이터들을 Key-Value 형식으로 저장
-		Map<String, Object> map = new HashMap<>();
-		map.put("userAddr", userAddr);
-		map.put("mem_nick", mem_nick);
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("userAddr", userAddr);
+		dataMap.put("mem_nick", mem_nick);
 		
 		// Map을 json형식으로 변환
 		try {
